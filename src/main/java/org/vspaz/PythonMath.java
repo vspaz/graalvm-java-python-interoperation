@@ -6,10 +6,14 @@ import org.graalvm.polyglot.Value;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PythonMath {
     String pythonModulePath;
-    Context ctx;
+    static Context ctx;
+
+    Map<String, Value> pythonFunctionToBindings = new HashMap<>();
 
     public PythonMath(String pythonModulePath) {
         this.pythonModulePath = pythonModulePath;
@@ -23,8 +27,10 @@ public class PythonMath {
     }
 
     public Value ComputeTotalWithPython(String pythonFunction, Object[] nums) {
-        Value computeTotal = ctx.getBindings("python").getMember(pythonFunction);
-        return computeTotal.execute(nums);
+        if (!pythonFunctionToBindings.containsKey(pythonFunction)) {
+            pythonFunctionToBindings.put(pythonFunction, ctx.getBindings("python").getMember(pythonFunction));
+            System.out.println(pythonFunction);
+        }
+        return pythonFunctionToBindings.get(pythonFunction).execute(nums);
     }
-
 }
