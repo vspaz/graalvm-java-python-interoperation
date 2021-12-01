@@ -122,23 +122,30 @@ graalpython -m ginstall install pandas
 
 ## Calling Python from Java
 
-suppose you have a Python module at /path/to/file/pure_python.py that does some computation with numpy e.g.
-
-_pure_python.py_
+suppose you have a Python module at /path/to/file/your_module.py that does some computation with numpy e.g.
 
 ```python
+#  your_module.py
 import site  # required!
 import numpy as np
+import pandas as pd
 
 
-def compute_total(*nums):
+def compute_total_with_numpy(*nums):
     return float(np.array(nums).sum())
+
+def compute_total_with_pandas(*nums):
+    return float(pd.DataFrame(nums).sum())
+
+def compute_total_with_pure_python(*nums):
+    return sum(nums)
 
 ```
 
 then to use it from within Java you can do something as follows:
 
 ```java
+// PythonBindings.java
 package org.vspaz;
 
 import org.graalvm.polyglot.Context;
@@ -148,27 +155,33 @@ import org.graalvm.polyglot.Value;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
-    public static double ComputeTotalWithPythonAndNumpy() {
-        Context ctx = Context.newBuilder().allowAllAccess(true).build();
-        File pythonModule = new File("/path/to/file/pure_python.py");
+public class PythonBindings {
+    private final Context ctx;
+
+    public PythonBindings(String pythonModulePath) {
+        ctx = Context.newBuilder().allowAllAccess(true).build();
         try {
-            ctx.eval(Source.newBuilder("python", pythonModule).build());
+            ctx.eval(Source.newBuilder("python", new File(pythonModulePath)).build());
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
-        Value computeTotal = ctx.getBindings("python").getMember("compute_total");
-        Object[] nums = {1.0, 2.23, 3.49494, 4.40404, 5.10110, 181.101, 133.11};
-        Value computedResult = computeTotal.execute(nums);
-        return computedResult.asDouble();
     }
 
-    public static void main(String[] args) {
-        System.out.println(ComputeTotalWithPythonAndNumpy()); // -> 330.44108
+    public Value runPythonMethod(String pythonFunction, Object[] args) {
+        return ctx.getBindings("python").getMember(pythonFunction).execute(args);
     }
 }
 
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        PythonBindings bindings = new PythonBindings("/path/to/your_module.py");
+        Object[] nums = {1.0, 2.23, 3.49494, 4.40404, 5.10110, 181.101, 133.11};
+        assert bindings.runPythonMethod("compute_total_with_pandas", nums).asDouble() == 330.44108;
+        assert bindings.runPythonMethod("compute_total_with_numpy", nums).asDouble() == 330.44108;
+        assert bindings.runPythonMethod("compute_total_with_pure_python", nums).asDouble() == 330.44108;
+    }
+}
 ```
 
 ## Possible Gotchas

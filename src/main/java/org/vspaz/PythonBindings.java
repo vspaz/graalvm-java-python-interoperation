@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class PythonBindings {
-    Context ctx;
+    private final Context ctx;
 
     public PythonBindings(String pythonModulePath) {
         ctx = Context.newBuilder().allowAllAccess(true).build();
