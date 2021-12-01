@@ -101,9 +101,7 @@ run the following:
 2. ``gu install  native-image``
 3. ``gu install python``
 
-## Calling Java from Python
-
-1. Setting up python env
+### Setting up python env
 
 ```shell
 graalpython -m venv graalenv
@@ -111,9 +109,64 @@ source graalenv/bin/activate
 ```
 
 2. Installing packages you should be able to install most of common packages found on pypi with ``pip``, however; there
-   are some packages that might not be compatible.
+   are some packages that might not be compatible. Some of these packages can be patched and made available.
+   run ``graalpython -m ginstall install --help``
+   to see such packages and install them via ``graalpython`` if they can't be installed directly via pip. Please, also
+   see item **4** in the **Possible Gotchas** section down below if you encounter some issues.
+
+```shell
+graalpython -m ginstall install pandas
+```
+
+## Calling Java from Python
 
 ## Calling Python from Java
+
+suppose you have a Python module at /path/to/file/pure_python.py that does some computation with numpy e.g.
+```python
+import site  # required!
+import numpy as np
+
+
+def compute_total(*nums):
+    return float(np.array(nums).sum())
+
+```
+
+then to use it from within Java you can do something as follows:
+
+```java
+package org.vspaz;
+
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
+
+import java.io.File;
+import java.io.IOException;
+
+public class Main {
+    public static double ComputeTotalWithPythonAndNumpy() {
+        Context ctx = Context.newBuilder().allowAllAccess(true).build();
+        File pythonModule = new File("/path/to/file/pure_python.py");
+        try {
+            ctx.eval(Source.newBuilder("python", pythonModule).build());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        Value computeTotal = ctx.getBindings("python").getMember("compute_total");
+        Object[] nums = {1.0, 2.23, 3.49494, 4.40404, 5.10110, 181.101, 133.11};
+        Value computedResult = computeTotal.execute(nums);
+        return computedResult.asDouble();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ComputeTotalWithPythonAndNumpy()); // -> 330.44108
+    }
+}
+
+```
 
 ## Possible Gotchas
 
@@ -135,7 +188,7 @@ source graalenv/bin/activate
    graalpython: command not found see item **2**.
 4. **error**: pip can't install any package e.g. requests
 
-   solution: pip install distutils
+   **solution**: pip install distutils
 
 5. **error**:
    scipy can't be installed
@@ -147,3 +200,4 @@ source graalenv/bin/activate
 
 1. https://www.graalvm.org/python/quickstart/
 2. https://www.graalvm.org/python/
+3. https://www.graalvm.org/reference-manual/python/
