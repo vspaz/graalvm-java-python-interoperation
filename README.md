@@ -1,8 +1,11 @@
 # GraalVM Java Python interoperation
 
 ## Installation
+
+### Installing GraalVM
+
 1. Download the latest version GraalVM Community from https://www.graalvm.org/downloads/
-currently it's 21.3.0.
+   currently it's 21.3.0.
 2. extract the archive
 
 ```shell
@@ -13,7 +16,8 @@ sudo ln -s graalvm-ce-java11-21.3.0 graalvm
 
 ## Configuration
 
-1. run **update-alternatives --config java**
+1. run ``update-alternatives --config java``
+
 ```shell
 update-alternatives --config java
 
@@ -33,6 +37,7 @@ Press <enter> to keep the current choice[*], or type selection number:
 ```shell
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/graalvm/bin/java
 ```
+
 now you should see a new Java configuration
 
 ```shell
@@ -49,7 +54,8 @@ There are 3 choices for the alternative java (providing /usr/bin/java).
 Press <enter> to keep the current choice[*], or type selection number: 
 
 ```
-3. Quick test: run **java --version**
+
+3. Quick test: run ``java --version``
 
 ```shell
 java --version
@@ -59,21 +65,57 @@ OpenJDK Runtime Environment GraalVM CE 21.3.0 (build 11.0.13+7-jvmci-21.3-b05)
 OpenJDK 64-Bit Server VM GraalVM CE 21.3.0 (build 11.0.13+7-jvmci-21.3-b05, mixed mode, sharing)
 ```
 
+4. Update .bashrc profile
+
+```shell
+# open .bashrc file with an editor of your choice, e.g. VIM.
+sudo vim ~/.bashrc
+
+# add the following line at the bottom of the file
+export PATH=$PATH:/usr/lib/jvm/graalvm-ce-java11-21.3.0/bin/installer/bin
+```
+
+### Installing Python support
+
+run ``gu available``
+
+```shell
+gu available
+Downloading: Release index file from oca.opensource.oracle.com
+Downloading: Component catalog from www.graalvm.org
+ComponentId              Version             Component name                Stability                     Origin 
+---------------------------------------------------------------------------------------------------------------------------------
+espresso                 21.3.0              Java on Truffle               Experimental                  github.com
+llvm-toolchain           21.3.0              LLVM.org toolchain            Supported                     github.com
+native-image             21.3.0              Native Image                  Early adopter                 github.com
+nodejs                   21.3.0              Graal.nodejs                  Supported                     github.com
+python                   21.3.0              Graal.Python                  Experimental                  github.com
+R                        21.3.0              FastR                         Experimental                  github.com
+ruby                     21.3.0              TruffleRuby                   Experimental                  github.com
+wasm                     21.3.0              GraalWasm                     Experimental                  github.com
+```
+
+run the following:
+
+1. ``gu install llvm-toolchain``
+2. ``gu install  native-image``
+3. ``gu install python``
 
 ## Calling Java from Python
 
 ## Calling Python from Java
 
 ## Possible Gotchas
-1. **error** 
-   
+
+1. **error**
+
    Downloading: Component catalog from www.graalvm.org
-   
-   Error: Unknown component 
 
-   you might be running an old version of GraalVM.
+   Error: Unknown component
 
+   solution: you might be running an old version of GraalVM; check the version.
 
 ## References
+
 1. https://www.graalvm.org/python/quickstart/
 2. 
