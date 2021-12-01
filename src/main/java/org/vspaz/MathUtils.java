@@ -7,7 +7,7 @@ import org.graalvm.polyglot.Value;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
+public class MathUtils {
     public static double ComputeTotalWithPythonAndNumpy() {
         Context ctx = Context.newBuilder().allowAllAccess(true).build();
         File pythonModule = new File("/home/vspaz/graal_tests/pure_python.py");
