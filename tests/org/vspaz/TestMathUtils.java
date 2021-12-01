@@ -23,6 +23,12 @@ public class TestMathUtils {
     }
 
     @Test
+    void testComputeTotalWithPurePythonOk() {
+        Value total = pythonMathUtils.ComputeTotalWithPython("compute_total_with_pure_python", nums);
+        Assertions.assertEquals(330.44108, total.asDouble());
+    }
+
+    @Test
     void testComputeTotalWithPythonOk() {
         Value pandasTotal = pythonMathUtils.ComputeTotalWithPython("compute_total_with_pandas", nums);
         Value numpyTotal = pythonMathUtils.ComputeTotalWithPython("compute_total_with_numpy", nums);

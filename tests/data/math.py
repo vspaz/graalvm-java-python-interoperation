@@ -7,3 +7,6 @@ def compute_total_with_numpy(*nums):
 
 def compute_total_with_pandas(*nums):
     return float(pd.DataFrame(nums).sum())
+
+def compute_total_with_pure_python(*nums):
+    return sum(nums)
