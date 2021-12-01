@@ -8,21 +8,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class PythonBindings {
-    final String pythonModulePath;
-    static Context ctx;
+    Context ctx;
 
     public PythonBindings(String pythonModulePath) {
-        this.pythonModulePath = pythonModulePath;
         ctx = Context.newBuilder().allowAllAccess(true).build();
-        File pythonModule = new File(pythonModulePath);
         try {
-            ctx.eval(Source.newBuilder("python", pythonModule).build());
+            ctx.eval(Source.newBuilder("python", new File(pythonModulePath)).build());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Value ComputeTotalWithPython(String pythonFunction, Object[] args) {
+    public Value runPythonMethod(String pythonFunction, Object[] args) {
         return ctx.getBindings("python").getMember(pythonFunction).execute(args);
     }
 }
