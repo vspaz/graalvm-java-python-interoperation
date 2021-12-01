@@ -6,7 +6,7 @@
 
 1. Download the latest version GraalVM Community from https://www.graalvm.org/downloads/
    currently it's 21.3.0.
-2. extract the archive
+2. Extract the archive
 
 ```shell
 tar -xvzf Downloads/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
@@ -103,6 +103,16 @@ run the following:
 
 ## Calling Java from Python
 
+1. Setting up python env
+
+```shell
+graalpython -m venv graalenv
+source graalenv/bin/activate
+```
+
+2. Installing packages you should be able to install most of common packages found on pypi with ``pip``, however; there
+   are some packages that might not be compatible.
+
 ## Calling Python from Java
 
 ## Possible Gotchas
@@ -113,9 +123,27 @@ run the following:
 
    Error: Unknown component
 
-   solution: you might be running an old version of GraalVM; check the version.
+   **solution**: you might be running an old version of GraalVM; check the version.
+2. **error**:
+
+   gu: command not found
+
+   **solution**: check if you can run ``gu`` by specifying the full path
+   e.g. ``/usr/lib/jvm/graalvm-ce-java11-21.3.0/bin/gu``. if it works, then check the path in _.bashrc_
+3. **error**:
+
+   graalpython: command not found see item **2**.
+4. **error**: pip can't install any package e.g. requests
+
+   solution: pip install distutils
+
+5. **error**:
+   scipy can't be installed
+
+   **solution**: make sure you have the following gfortran libopenblas-dev liblapack-dev installed,
+   run ``sudo apt-get install gfortran libopenblas-dev liblapack-dev``
 
 ## References
 
 1. https://www.graalvm.org/python/quickstart/
-2. 
+2. https://www.graalvm.org/python/
