@@ -123,6 +123,9 @@ graalpython -m ginstall install pandas
 ## Calling Python from Java
 
 suppose you have a Python module at /path/to/file/pure_python.py that does some computation with numpy e.g.
+
+_pure_python.py_
+
 ```python
 import site  # required!
 import numpy as np
