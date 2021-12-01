@@ -22,8 +22,9 @@ public class PythonMath {
         }
     }
 
-    public Value ComputeTotalWithPythonAndNumpy(String pythonFunction, Object[] nums) {
+    public Value ComputeTotalWithPython(String pythonFunction, Object[] nums) {
         Value computeTotal = ctx.getBindings("python").getMember(pythonFunction);
         return computeTotal.execute(nums);
     }
+
 }
