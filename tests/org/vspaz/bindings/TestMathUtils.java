@@ -1,4 +1,4 @@
-package org.vspaz;
+package org.vspaz.bindings;
 
 import org.graalvm.polyglot.Value;
 import org.junit.jupiter.api.Assertions;
