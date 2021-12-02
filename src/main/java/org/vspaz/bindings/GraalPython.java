@@ -7,10 +7,10 @@ import org.graalvm.polyglot.Value;
 import java.io.File;
 import java.io.IOException;
 
-public class PythonBindings {
+public class GraalPython {
     private final Context ctx;
 
-    public PythonBindings(String pythonModulePath) {
+    public GraalPython(String pythonModulePath) {
         ctx = Context.newBuilder().allowAllAccess(true).build();
         try {
             ctx.eval(Source.newBuilder("python", new File(pythonModulePath)).build());
