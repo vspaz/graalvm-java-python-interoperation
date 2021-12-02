@@ -126,6 +126,7 @@ Suppose you have a Python module at /path/to/file/your_module.py that does some 
 
 ```python
 #  your_module.py
+
 import site  # required!
 import numpy as np
 import pandas as pd
