@@ -122,7 +122,7 @@ graalpython -m ginstall install pandas
 
 ## Calling Python from Java
 
-suppose you have a Python module at /path/to/file/your_module.py that does some computation with numpy e.g.
+Suppose you have a Python module at /path/to/file/your_module.py that does some computation with numpy e.g.
 
 ```python
 #  your_module.py
@@ -145,8 +145,8 @@ def compute_total_with_pure_python(*nums):
 then to use it from within Java you can do something as follows:
 
 ```java
-// PythonBindings.java
-package org.vspaz;
+// GraalPython.java
+package org.vspaz.bindings;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
@@ -155,10 +155,10 @@ import org.graalvm.polyglot.Value;
 import java.io.File;
 import java.io.IOException;
 
-public class PythonBindings {
+public class GraalPython {
     private final Context ctx;
 
-    public PythonBindings(String pythonModulePath) {
+    public GraalPython(String pythonModulePath) {
         ctx = Context.newBuilder().allowAllAccess(true).build();
         try {
             ctx.eval(Source.newBuilder("python", new File(pythonModulePath)).build());
@@ -173,9 +173,12 @@ public class PythonBindings {
 }
 
 // Main.java
+
+import org.vspaz.bindings.GraalPython;
+
 public class Main {
     public static void main(String[] args) {
-        PythonBindings bindings = new PythonBindings("/path/to/your_module.py");
+        GraalPython bindings = new GraalPython("/path/to/your_module.py");
         Object[] nums = {1.0, 2.23, 3.49494, 4.40404, 5.10110, 181.101, 133.11};
         assert bindings.runPythonMethod("compute_total_with_pandas", nums).asDouble() == 330.44108;
         assert bindings.runPythonMethod("compute_total_with_numpy", nums).asDouble() == 330.44108;
