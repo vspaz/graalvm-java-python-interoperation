@@ -118,7 +118,6 @@ source graalenv/bin/activate
 graalpython -m ginstall install pandas
 ```
 
-## Calling Java from Python
 
 ## Calling Python from Java
 
@@ -187,6 +186,25 @@ public class Main {
         assert bindings.runPythonMethod("compute_total_with_pure_python", nums).asDouble() == 330.44108;
     }
 }
+```
+
+## Calling Java from Python
+
+Suppose you have a Java class e.g.
+
+```java
+// StringOps.java
+
+public class StringOps{
+  public String multiply(String text, int times) {
+    StringBuilder newText = new StringBuilder();
+    for (int i = 0; i < times; i++) {
+        newText.append(text);
+  }
+  return newText.toString();
+  }
+}
+
 ```
 
 ## Possible Gotchas
