@@ -206,6 +206,26 @@ public class StringOps{
 }
 
 ```
+then compile it
+```shell
+javac StringOps.java
+```
+
+```python
+#  java_from_python.py
+
+import java
+
+
+string_ops = java.type("StringOps")()
+assert "abcabcabcabcabc" == string_ops.multiply("abc", 5)
+
+```
+
+```shell
+graalpython --jvm --vm.cp=. java_from_python.py
+```
+
 
 ## Possible Gotchas
 
