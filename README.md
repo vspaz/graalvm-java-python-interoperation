@@ -196,13 +196,9 @@ Suppose you have a Java class e.g.
 // StringOps.java
 
 public class StringOps{
-  public String multiply(String text, int times) {
-    StringBuilder newText = new StringBuilder();
-    for (int i = 0; i < times; i++) {
-        newText.append(text);
-  }
-  return newText.toString();
-  }
+   public String multiply(String text, int times) {
+      return String.valueOf(text).repeat(Math.max(0, times));
+   }
 }
 
 ```
