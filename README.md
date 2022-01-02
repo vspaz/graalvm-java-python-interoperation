@@ -220,8 +220,11 @@ assert "abcabcabcabcabc" == string_ops.multiply("abc", 5)
 
 ```shell
 graalpython --jvm --vm.cp=. java_from_python.py
-```
 
+# or if you set up a graalpython venv, then e.g.
+source graalenv/bin/activate
+python --jvm --vm.cp=. java_from_python.py
+```
 
 ## Possible Gotchas
 
