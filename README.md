@@ -4,14 +4,13 @@
 
 ### Installing GraalVM
 
-1. Download the latest version GraalVM Community from https://www.graalvm.org/downloads/
+1. Download the latest version GraalVM Community from https://github.com/graalvm/graalvm-ce-builds/releases/
    currently it's 21.3.0.
 2. Extract the archive
 
 ```shell
-tar -xvzf Downloads/graalvm-ce-java11-linux-amd64-21.3.0.tar.gz
-sudo mv graalvm-ce-java11-21.3.0/ /usr/lib/jvm/
-sudo ln -s graalvm-ce-java11-21.3.0 graalvm
+tar -xvzf Downloads/graalvm-community-jdk-17.0.8_linux-x64_bin.tar.gz
+sudo mv graalvm-community-openjdk-17.0.8+7.1/ /usr/lib/jvm
 ```
 
 ## Configuration
@@ -35,44 +34,64 @@ Press <enter> to keep the current choice[*], or type selection number:
 2. Add a new Java configuration
 
 ```shell
-sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/graalvm/bin/java
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/bin/java 1111
 ```
 
 now you should see a new Java configuration
 
 ```shell
-update-alternatives --config java
-There are 3 choices for the alternative java (providing /usr/bin/java).
+sudo update-alternatives --config java
+There are 5 choices for the alternative java (providing /usr/bin/java).
 
-  Selection    Path                                            Priority   Status
+  Selection    Path                                                        Priority   Status
 ------------------------------------------------------------
-  0            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      auto mode
-* 1            /usr/lib/jvm/graalvm/bin/java                    2         manual mode
-  2            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
-  3            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
+  0            /usr/lib/jvm/java-19-openjdk-amd64/bin/java                  1911      auto mode
+* 1            /usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/bin/java   1111      manual mode
+  2            /usr/lib/jvm/java-11-openjdk-amd64/bin/java                  1111      manual mode
+  3            /usr/lib/jvm/java-17-openjdk-amd64/bin/java                  1711      manual mode
+  4            /usr/lib/jvm/java-19-openjdk-amd64/bin/java                  1911      manual mode
+  5            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java               1081      manual mode
 
-Press <enter> to keep the current choice[*], or type selection number: 
+Press <enter> to keep the current choice[*], or type selection number:
 
 ```
 
 3. Quick test: run ``java --version``
 
 ```shell
-java --version
-
-openjdk 11.0.13 2021-10-19
-OpenJDK Runtime Environment GraalVM CE 21.3.0 (build 11.0.13+7-jvmci-21.3-b05)
-OpenJDK 64-Bit Server VM GraalVM CE 21.3.0 (build 11.0.13+7-jvmci-21.3-b05, mixed mode, sharing)
+openjdk 17.0.8 2023-07-18
+OpenJDK Runtime Environment GraalVM CE 17.0.8+7.1 (build 17.0.8+7-jvmci-23.0-b15)
+OpenJDK 64-Bit Server VM GraalVM CE 17.0.8+7.1 (build 17.0.8+7-jvmci-23.0-b15, mixed mode, sharing)
 ```
 
-4. Update .bashrc profile
+4. Add a new javac version
+
+```shell
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/bin/javac 1111
+
+sudo update-alternatives --config javac
+There are 5 choices for the alternative javac (providing /usr/bin/javac).
+
+  Selection    Path                                                         Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-19-openjdk-amd64/bin/javac                  1911      auto mode
+* 1            /usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/bin/javac   1111      manual mode
+  2            /usr/lib/jvm/java-11-openjdk-amd64/bin/javac                  1111      manual mode
+  3            /usr/lib/jvm/java-17-openjdk-amd64/bin/javac                  1711      manual mode
+  4            /usr/lib/jvm/java-19-openjdk-amd64/bin/javac                  1911      manual mode
+  5            /usr/lib/jvm/java-8-openjdk-amd64/bin/javac                   1081      manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 
+```
+
+5Update .bashrc profile
 
 ```shell
 # open .bashrc file with an editor of your choice, e.g. VIM.
 sudo vim ~/.bashrc
 
 # add the following line at the bottom of the file
-export PATH=$PATH:/usr/lib/jvm/graalvm-ce-java11-21.3.0/bin/installer/bin
+export PATH=$PATH:/usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/lib/installer/bin
 ```
 
 ### Installing Python support
@@ -80,19 +99,23 @@ export PATH=$PATH:/usr/lib/jvm/graalvm-ce-java11-21.3.0/bin/installer/bin
 run ``gu available``
 
 ```shell
-gu available
-Downloading: Release index file from oca.opensource.oracle.com
 Downloading: Component catalog from www.graalvm.org
 ComponentId              Version             Component name                Stability                     Origin 
 ---------------------------------------------------------------------------------------------------------------------------------
-espresso                 21.3.0              Java on Truffle               Experimental                  github.com
-llvm-toolchain           21.3.0              LLVM.org toolchain            Supported                     github.com
-native-image             21.3.0              Native Image                  Early adopter                 github.com
-nodejs                   21.3.0              Graal.nodejs                  Supported                     github.com
-python                   21.3.0              Graal.Python                  Experimental                  github.com
-R                        21.3.0              FastR                         Experimental                  github.com
-ruby                     21.3.0              TruffleRuby                   Experimental                  github.com
-wasm                     21.3.0              GraalWasm                     Experimental                  github.com
+espresso                 23.0.1              Java on Truffle               Supported                     github.com
+espresso-llvm            23.0.1              Java on Truffle LLVM Java librSupported                     github.com
+icu4j                    23.0.1              ICU4J                         Supported                     github.com
+js                       23.0.1              Graal.js                      Supported                     github.com
+llvm                     23.0.1              LLVM Runtime Core             Supported                     github.com
+llvm-toolchain           23.0.1              LLVM.org toolchain            Supported                     github.com
+native-image-llvm-backend23.0.1              Native Image LLVM Backend     Early adopter (experimental)  github.com
+nodejs                   23.0.1              Graal.nodejs                  Supported                     github.com
+python                   23.0.1              GraalVM Python                Experimental                  github.com
+regex                    23.0.1              TRegex                        Supported                     github.com
+ruby                     23.0.1              TruffleRuby                   Experimental                  github.com
+visualvm                 23.0.1              VisualVM                      Supported                     github.com
+wasm                     23.0.1              GraalWasm                     Experimental                  github.com
+
 ```
 
 run the following:
@@ -104,7 +127,11 @@ run the following:
 ### Setting up python env
 
 ```shell
-graalpython -m venv graalenv
+ln -s /usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/languages/python/bin/graalpy graalpython
+```
+
+```shell
+./graalpython -m venv graalenv
 source graalenv/bin/activate
 ```
 
@@ -240,7 +267,7 @@ python --jvm --vm.cp=. java_from_python.py
    gu: command not found
 
    **solution**: check if you can run ``gu`` by specifying the full path
-   e.g. ``/usr/lib/jvm/graalvm-ce-java11-21.3.0/bin/gu``. if it works, then check the path in _.bashrc_
+   e.g. ``./usr/lib/jvm/graalvm-community-openjdk-17.0.8+7.1/lib/installer/bin/gu``. if it works, then check the path in _.bashrc_
 3. **error**:
 
    graalpython: command not found see item **2**.
